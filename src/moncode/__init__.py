@@ -54,7 +54,7 @@ It's better to supply it if you can. Run `moncode languages` to see a list of su
 @click.option("-q", "--quiet", "verbosity", flag_value=0, help="Run quietly.")
 @click.option("-v", "--verbose", "verbosity", flag_value=2, help="Run loudly.")
 def format_code(language=None, input=None, format=None, output=None, verbosity=None):
-    r"""
+    """
     Format code for MongoDB slides.
 
     \b

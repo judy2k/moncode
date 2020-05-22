@@ -1,6 +1,8 @@
 # moncode
 
-Take code from the clipboard and format it for MongoDB slides.
+Moncode is a small CLI tool which takes source code from the clipboard,
+formats it using the MongoDB presentation color-scheme and code font,
+and then puts the result back on the clipboard.
 
 The result looks a bit like this:
 
@@ -8,13 +10,16 @@ The result looks a bit like this:
 
 ## Installing it
 
-I recommend you use [pipx](https://pipxproject.github.io/pipx/) to install moncode as a command-line tool. If you have pipx you can install it like this:
+I recommend you use [pipx](https://pipxproject.github.io/pipx/)
+to install moncode as a command-line tool.
+If you have pipx you can install it like this:
 
 ```bash
 pipx install moncode
 ```
 
-If you don't want to install pipx, you can install it with pip, but it's not really recommended:
+If you don't want to install pipx, you can install it with pip,
+but it's not really recommended:
 
 ```bash
 # This will install moncode into your system python:
@@ -23,42 +28,44 @@ pip install moncode
 
 ## Using it
 
-Moncode is fully documented. The command you'll probably use most is `format`, like this:
+Moncode is fully documented.
+The command you'll probably use most is `format`, like this:
 
 ### moncode format
 
-That's the way I use it:
+This is the way I use it:
 
-1. Copy Python code from my IDE
-2. Run `moncode format -l python` in a terminal window. Now the syntax-highlighted Python code is in my clipboard.
+1. Copy some Python code from my IDE
+2. Run `moncode format -l python` in a terminal window.
+   Now the Python code in my clipboard has been repaced by syntax-highlighted Python code.
 3. Paste the result into Google Slides (or Powerpoint or whatever.)
 
-There are a bunch of other ways to use the tool, taking input from stdin or a file on disk, and sending the results to stdout or a file on disk. The command options are fully documented:
+There are a bunch of other ways to use the tool,
+taking input from stdin or a file on disk,
+and sending the results to stdout or a file on disk.
+The command options are fully documented:
 
 ```bash
-$  moncode format --help
-Usage: moncode format [OPTIONS]
+# Copy code from the clipboard, format it as RTF and then copy the result to the clipboard.
+moncode format
 
-  Format code for MongoDB slides.
+# Specify the language if the guess is wrong:
+moncode format --language ruby
 
-  # Copy code from the clipboard, format it as RTF and then copy the result to the clipboard.
-  moncode format
+# Read code from stdin and copy result to clipboard:
+cat sample_inputs/sample.js | moncode format
 
-  # Specify the language if a guess is wrong:
-  moncode format --language ruby
+# Read from sample.py and write to output.rtf:
+moncode format -i sample.py -o output.rtf
 
-  # Read code from stdin and copy result to clipboard:
-  cat sample_inputs/sample.js | moncode format
+# Read from the clipboard, and write to stdout:
+moncode format -o -
 
-  # Read from sample.py and write to output.rtf:
-  moncode format -i sample.py -o output.rtf
+# Format the code from the clipboard as HTML and write to output.html
+moncode format -o output.html -f html
+```
 
-  # Read from the clipboard, and write to stdout:
-  moncode format -o -
-
-  # Format the code from the clipboard as HTML and write to output.html
-  moncode format -o output.html -f html
-
+```text
 Options:
   -l, --language TEXT      The programming language to be formatted. If not
                            supplied, this will be guessed from the file name
@@ -79,7 +86,11 @@ Options:
   --help                   Show this message and exit.
 ```
 
-When running `moncode format`, I recommend you pass the `-l` flag, specifying the programming language of the input code. If you don't, moncode will guess the language, and likely get it wrong. What languages are supported? Glad you asked...
+When running `moncode format`, I recommend you pass the `-l` flag,
+specifying the programming language of the input code.
+If you don't, moncode will guess the language, and likely get it wrong.
+What languages are supported?
+Glad you asked...
 
 ### moncode languages
 
@@ -116,12 +127,25 @@ yaml, yaml+jinja
 zeek, zephir, zig
 ```
 
-Phew! That's a lot of languages, isn't it? All of these are values supported by the `-l` option to `moncode format`
+Phew! That's a lot of languages, isn't it?
+Any of these values are supported by the `-l` option to `moncode format`
 
-## Developing
+## Development
 
 Run the following to install the project (and dev dependencies) into your active virtualenv:
 
 ```bash
 pip install -e .[dev]
+```
+
+Run tests with:
+
+```bash
+make test
+```
+
+Run tests under different versions of Python with:
+
+```bash
+tox
 ```
