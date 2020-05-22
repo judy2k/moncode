@@ -1,5 +1,8 @@
 from setuptools import setup, find_packages
 
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
 EXTRAS_REQUIRE = {
     'tests': [
         "pytest",
@@ -16,9 +19,12 @@ EXTRAS_REQUIRE['dev'] = EXTRAS_REQUIRE['tests'] + [
 setup(
     name="moncode",
     description="Take code from the clipboard and format it for MongoDB slides.",
-    version='0.0.0',
+    long_description=long_description,
+    long_description_content_type='text/markdown; variant=GFM',
+    version='0.0.1',
     author="Mark Smith",
     author_email="judy@judy.co.uk",
+    url="https://github.com/judy2k/moncode",
     
     packages=find_packages(where="src"),
     package_dir={"": "src"},
@@ -32,4 +38,16 @@ setup(
         [console_scripts]
         moncode=moncode:main
     """,
+
+    keywords=["tui", "console", "syntax", "formatting", "rtf", "presentation", "code"],
+    classifiers=[
+        "Development Status :: 4 - Beta",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "License :: OSI Approved :: Apache Software License",
+        "Environment :: Console",
+        "Operating System :: OS Independent",
+    ],
 )

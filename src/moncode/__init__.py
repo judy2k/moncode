@@ -1,13 +1,13 @@
 #!python3
-'''
+"""
 moncode - Format code for MongoDB slides.
-'''
+"""
 
 import io
 from itertools import groupby
 import logging
 import textwrap
-from sys import stdin, stdout
+from sys import stdin
 
 import click
 from pygments.lexers import get_lexer_by_name, guess_lexer, guess_lexer_for_filename
@@ -18,24 +18,43 @@ import pyperclip
 
 from .styles import MongoDark
 
+
 @click.group()
 def main():
-    '''
+    """
     moncode - Format code for MongoDB slides.
-    '''
+    """
     logging.basicConfig(format="%(message)s")
 
-@main.command()
-@click.option('-l', '--language', help="""The programming language to be formatted.
+
+@main.command('format')
+@click.option(
+    "-l",
+    "--language",
+    help="""The programming language to be formatted.
 If not supplied, this will be guessed from the file name or content.
-It's better to supply it if you can. Run `moncode languages` to see a list of supported input languages.""")
-@click.option('-i', '--input', type=click.File(), help="The path to a code file to be formatted. If not supplied, either code will be read from stdin, or else copied from the clipboard.")
-@click.option('-o', '--output', type=click.File('w'), help="The path to write output to.")
-@click.option('-f', '--format', type=click.Choice(['html', 'rtf'], case_sensitive=False), default='rtf', help="The output format. Defaults to 'rtf' (which is good for copy-pasting).")
-@click.option('-q', '--quiet', 'verbosity', flag_value=0, help="Run quietly.")
-@click.option('-v', '--verbose', 'verbosity', flag_value=2, help="Run loudly.")
-def format(language=None, input=None, format=None, output=None, verbosity=None):
-    '''
+It's better to supply it if you can. Run `moncode languages` to see a list of supported input languages.""",
+)
+@click.option(
+    "-i",
+    "--input",
+    type=click.File(),
+    help="The path to a code file to be formatted. If not supplied, either code will be read from stdin, or else copied from the clipboard.",
+)
+@click.option(
+    "-o", "--output", type=click.File("w"), help="The path to write output to."
+)
+@click.option(
+    "-f",
+    "--format",
+    type=click.Choice(["html", "rtf"], case_sensitive=False),
+    default="rtf",
+    help="The output format. Defaults to 'rtf' (which is good for copy-pasting).",
+)
+@click.option("-q", "--quiet", "verbosity", flag_value=0, help="Run quietly.")
+@click.option("-v", "--verbose", "verbosity", flag_value=2, help="Run loudly.")
+def format_code(language=None, input=None, format=None, output=None, verbosity=None):
+    r"""
     Format code for MongoDB slides.
 
     \b
@@ -61,14 +80,12 @@ def format(language=None, input=None, format=None, output=None, verbosity=None):
     \b
     # Format the code from the clipboard as HTML and write to output.html
     moncode format -o output.html -f html
-    '''
+    """
 
-    logging.getLogger().setLevel({
-        None: logging.INFO,
-        0: logging.WARNING,
-        2: logging.DEBUG,
-    }[verbosity])
-    
+    logging.getLogger().setLevel(
+        {None: logging.INFO, 0: logging.WARNING, 2: logging.DEBUG,}[verbosity]
+    )
+
     code = None
     if input:
         logging.debug("Input from file: %s", input.name)
@@ -86,8 +103,8 @@ def format(language=None, input=None, format=None, output=None, verbosity=None):
 
     lexer = None
     lexer_args = {
-        'stripall': True,
-        'tabsize': 4,
+        "stripall": True,
+        "tabsize": 4,
     }
     if language:
         logging.debug("Language specified: %s", language)
@@ -104,11 +121,11 @@ def format(language=None, input=None, format=None, output=None, verbosity=None):
     # Fix this abomination:
     if isinstance(lexer, Python2Lexer):
         lexer = PythonLexer(**lexer_args)
-    
+
     logging.debug("Lexer: %r", lexer.name)
     logging.debug("Output format: %s", format)
-    
-    output_func = globals()[f'output_{format}']
+
+    output_func = globals()[f"output_{format}"]
 
     if output:
         logging.debug("Output written to %s", output.name)
@@ -127,11 +144,11 @@ def lexer_names():
 
 @main.command()
 def languages():
-    '''
+    """
     List all the input languages supported by moncode.
-    '''
+    """
     for _, names in groupby(sorted(lexer_names()), lambda name: name[0]):
-        print(', '.join(names))
+        print(", ".join(names))
 
 
 def output_rtf(f, code, lexer):
@@ -142,7 +159,8 @@ def output_rtf(f, code, lexer):
 
 def output_html(f, code, lexer):
     formatter = HtmlFormatter(noclasses=False, style=MongoDark)
-    f.write("""
+    f.write(
+        """
     <!doctype html>
     <html>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -157,18 +175,21 @@ def output_html(f, code, lexer):
         }
 
         """
-        + formatter.get_style_defs()  +
-        """        
+        + formatter.get_style_defs()
+        + """        
 
     </style>
     <body>
-    """)
+    """
+    )
     f.write(highlight(code, lexer, formatter))
-    f.write("""
+    f.write(
+        """
     </body>
     </html>
-    """)
+    """
+    )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
