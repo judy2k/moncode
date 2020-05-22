@@ -9,3 +9,8 @@ clean:
 	rm -rf build dist src/*.egg-info
 	find src -name '__pycache__' | xargs rm -rf
 	find tests -name '__pycache__' | xargs rm -rf
+
+dev:
+	python -m pip install -e .[dev]
+
+.PHONY: all test clean dev
