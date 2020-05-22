@@ -42,7 +42,7 @@ class MongoDark(Style):
         Comment.Single: "",  # class: 'c1'
         Comment.Special: "",  # class: 'cs'
         Keyword: f"{MINT} italic",  # class: 'k'
-        Keyword.Constant: f"{MINT} bold",  # class: 'kc'
+        Keyword.Constant: f"{MINT}",  # class: 'kc'
         Keyword.Declaration: "",  # class: 'kd'
         Keyword.Namespace: "",  # class: 'kn'
         Keyword.Pseudo: "",  # class: 'kp'
