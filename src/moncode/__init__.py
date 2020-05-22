@@ -31,7 +31,7 @@ If not supplied, this will be guessed from the file name or content.
 It's better to supply it if you can. Run `moncode languages` to see a list of supported input languages.""")
 @click.option('-i', '--input', type=click.File(), help="The path to a code file to be formatted. If not supplied, either code will be read from stdin, or else copied from the clipboard.")
 @click.option('-o', '--output', type=click.File('w'), help="The path to write output to.")
-@click.option('-f', '--format', type=click.Choice(['html', 'rtf']), default='rtf', help="The output format. Defaults to 'rtf' (which is good for copy-pasting).")
+@click.option('-f', '--format', type=click.Choice(['html', 'rtf'], case_sensitive=False), default='rtf', help="The output format. Defaults to 'rtf' (which is good for copy-pasting).")
 @click.option('-q', '--quiet', 'verbosity', flag_value=0, help="Run quietly.")
 @click.option('-v', '--verbose', 'verbosity', flag_value=2, help="Run loudly.")
 def format(language=None, input=None, format=None, output=None, verbosity=None):
@@ -48,15 +48,19 @@ def format(language=None, input=None, format=None, output=None, verbosity=None):
 
     \b
     # Read code from stdin and copy result to clipboard:
-    cat sample_inputs/sample.js | moncode
+    cat sample_inputs/sample.js | moncode format
 
     \b
     # Read from sample.py and write to output.rtf:
-    moncode -i sample.py -o output.rtf
+    moncode format -i sample.py -o output.rtf
 
     \b
     # Read from the clipboard, and write to stdout:
-    moncode -o -
+    moncode format -o -
+
+    \b
+    # Format the code from the clipboard as HTML and write to output.html
+    moncode format -o output.html -f html
     '''
 
     logging.getLogger().setLevel({
