@@ -1,0 +1,10 @@
+Python 3.8.0 (default, Dec  3 2019, 11:17:12)
+[Clang 10.0.1 (clang-1001.0.46.4)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import textwrap
+>>> textwrap.dedent("    this is some\n    text")
+'this is some\ntext'
+>>> textwrap.dedent()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: dedent() missing 1 required positional argument: 'text'

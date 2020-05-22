@@ -57,7 +57,7 @@ class MongoDark(Style):
         Name.Builtin.Pseudo: "",  # class: 'bp'
         Name.Class: "",  # class: 'nc' - to be revised
         Name.Constant: "",  # class: 'no' - to be revised
-        Name.Decorator: "",  # class: 'nd' - to be revised
+        Name.Decorator: MINT,  # class: 'nd' - to be revised
         Name.Entity: "",  # class: 'ni'
         Name.Exception: "",  # class: 'ne'
         Name.Function: "",  # class: 'nf'
