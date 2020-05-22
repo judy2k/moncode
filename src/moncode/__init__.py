@@ -1,27 +1,37 @@
 #!python3
 '''
-moncode - Take code from the clipboard and format it for MongoDB slides.
+moncode - Format code for MongoDB slides.
 '''
 
+import io
+from itertools import groupby
 import textwrap
 from sys import stdin, stdout
 
 import click
 from pygments.lexers import get_lexer_by_name, guess_lexer, guess_lexer_for_filename
 from pygments import highlight
-from pygments.lexers import Python2Lexer, PythonLexer
+from pygments.lexers import Python2Lexer, PythonLexer, get_all_lexers
 from pygments.formatters import HtmlFormatter, RtfFormatter
 import pyperclip
 
 
 from .styles import MongoDark
 
-@click.command()
+@click.group()
+def main():
+    pass
+
+
+@main.command()
 @click.option('-l', '--language')
 @click.option('-i', '--input', type=click.File())
 @click.option('-o', '--output', type=click.File('w'))
 @click.option('-f', '--format', type=click.Choice(['html', 'rtf']), default='rtf')
-def main(language=None, input=None, format=None, output=None):
+def format(language=None, input=None, format=None, output=None):
+    '''
+    moncode - Format code for MongoDB slides.
+    '''
     code = None
     if input:
         code = input.read()
@@ -57,12 +67,28 @@ def main(language=None, input=None, format=None, output=None):
     if output:
         output_func(output, code, lexer)
     else:
-        output_func(stdout, code, lexer)
+        buffer = io.StringIO()
+        output_func(buffer, code, lexer)
+        pyperclip.copy(buffer.getvalue())
+
+
+def lexer_names():
+    for name, aliases, filenames, mimetypes in get_all_lexers():
+        yield aliases[0]
+
+
+@main.command()
+def list():
+    '''
+    List all the languages supported by moncode.
+    '''
+    for _, names in groupby(sorted(lexer_names()), lambda name: name[0]):
+        print(', '.join(names))
 
 
 def output_rtf(f, code, lexer):
     # Font size is specified in HALF POINTS; 28 = 14pt
-    formatter = RtfFormatter(style=MongoDark, fontface="fira mono", fontsize=28)
+    formatter = RtfFormatter(style=MongoDark, fontface="fira mono", fontsize=37)
     f.write(highlight(code, lexer, formatter))
 
 

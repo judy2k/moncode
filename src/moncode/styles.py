@@ -70,13 +70,13 @@ class MongoDark(Style):
         Name.Variable.Class: "",  # class: 'vc' - to be revised
         Name.Variable.Global: "",  # class: 'vg' - to be revised
         Name.Variable.Instance: "",  # class: 'vi' - to be revised
-        Number: "",  # class: 'm'
+        Number: CLOUD,  # class: 'm'
         Number.Float: "",  # class: 'mf'
         Number.Hex: "",  # class: 'mh'
         Number.Integer: "",  # class: 'mi'
         Number.Integer.Long: "",  # class: 'il'
         Number.Oct: "",  # class: 'mo'
-        Literal: "",  # class: 'l'
+        Literal: CLOUD,  # class: 'l'
         Literal.Date: "",  # class: 'ld'
         String: MAGNOLIA,  # class: 's'
         String.Affix: BLUE_SKY,  # class: 'sa'
@@ -91,7 +91,7 @@ class MongoDark(Style):
         String.Regex: "",  # class: 'sr'
         String.Single: "",  # class: 's1'
         String.Symbol: "",  # class: 'ss'
-        Generic: "",  # class: 'g'
+        Generic: CLOUD,  # class: 'g'
         Generic.Deleted: "",  # class: 'gd',
         Generic.Emph: "",  # class: 'ge'
         Generic.Error: "",  # class: 'gr'
