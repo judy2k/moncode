@@ -1,0 +1,11 @@
+include prospector.yaml
+include Makefile
+include tox.ini
+recursive-include assets *.png
+include sample_inputs/python_console.txt
+include sample_inputs/sample.html
+include sample_inputs/sample.java
+include sample_inputs/sample.py
+include sample_inputs/sample.js
+include sample_inputs/sample.css
+recursive-include tests *.py

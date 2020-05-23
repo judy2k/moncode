@@ -10,7 +10,7 @@ EXTRAS_REQUIRE = {
     ],
 }
 EXTRAS_REQUIRE['dev'] = EXTRAS_REQUIRE['tests'] + [
-    "prospector[pyroma]",
+    "prospector[with_pyroma]",
     "black",
     "twine",
     "wheel",
@@ -21,7 +21,7 @@ setup(
     description="Take code from the clipboard and format it for MongoDB slides.",
     long_description=long_description,
     long_description_content_type='text/markdown; variant=GFM',
-    version='0.0.1',
+    version='0.0.2',
     author="Mark Smith",
     author_email="judy@judy.co.uk",
     url="https://github.com/judy2k/moncode",

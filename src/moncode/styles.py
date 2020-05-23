@@ -35,9 +35,7 @@ a = 1 * 100
 
 
 class MongoDark(Style):
-    """
-    This implements a MongoDB style.
-    """
+    """ This implements a MongoDB style. """
 
     background_color = GRAPHITE
     highlight_color = LEAD

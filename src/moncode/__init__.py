@@ -1,7 +1,5 @@
 #!python3
-"""
-moncode - Format code for MongoDB slides.
-"""
+"""moncode - Format code for MongoDB slides."""
 
 import io
 from itertools import groupby
@@ -19,27 +17,37 @@ import pyperclip
 from .styles import MongoDark
 
 
+__version__ = version = "0.0.2"
+
+
 @click.group()
 def main():
-    """
-    moncode - Format code for MongoDB slides.
-    """
+    """moncode - Format code for MongoDB slides."""
     logging.basicConfig(format="%(message)s")
 
 
-@main.command('format')
+@main.command("version")
+def version_command():
+    """Print the currently installed version of moncode."""
+    print(f"moncode v{__version__}")
+
+
+@main.command("format")
 @click.option(
     "-l",
     "--language",
     help="""The programming language to be formatted.
-If not supplied, this will be guessed from the file name or content.
-It's better to supply it if you can. Run `moncode languages` to see a list of supported input languages.""",
+    If not supplied, this will be guessed from the file name or content.
+    It's better to supply it if you can.
+    Run `moncode languages` to see a list of supported input languages.""",
 )
 @click.option(
     "-i",
     "--input",
     type=click.File(),
-    help="The path to a code file to be formatted. If not supplied, either code will be read from stdin, or else copied from the clipboard.",
+    help=""""The path to a code file to be formatted.
+    If not supplied, either code will be read from stdin,
+    or else copied from the clipboard.""",
 )
 @click.option(
     "-o", "--output", type=click.File("w"), help="The path to write output to."
@@ -49,7 +57,8 @@ It's better to supply it if you can. Run `moncode languages` to see a list of su
     "--format",
     type=click.Choice(["html", "rtf"], case_sensitive=False),
     default="rtf",
-    help="The output format. Defaults to 'rtf' (which is good for copy-pasting).",
+    help="""The output format.
+    Defaults to 'rtf' (which is good for copy-pasting).""",
 )
 @click.option("-q", "--quiet", "verbosity", flag_value=0, help="Run quietly.")
 @click.option("-v", "--verbose", "verbosity", flag_value=2, help="Run loudly.")
@@ -144,9 +153,7 @@ def lexer_names():
 
 @main.command()
 def languages():
-    """
-    List all the input languages supported by moncode.
-    """
+    """ List all the input languages supported by moncode. """
     for _, names in groupby(sorted(lexer_names()), lambda name: name[0]):
         print(", ".join(names))
 
